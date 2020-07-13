@@ -6,14 +6,14 @@ import 'package:live_location/live_location.dart';
 
 import 'package:location_permissions/location_permissions.dart';
 
-void main() => runApp(MyApp());
+void main() => runApp(LocationExample());
 
-class MyApp extends StatefulWidget {
+class LocationExample extends StatefulWidget {
   @override
-  _MyAppState createState() => _MyAppState();
+  _LocationExampleState createState() => _LocationExampleState();
 }
 
-class _MyAppState extends State<MyApp> {
+class _LocationExampleState extends State<LocationExample> {
   String _latitude;
   String _longitude;
 
@@ -22,7 +22,11 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     requestLocationPermission();
-    LiveLocation.start(5);
+
+    /// On first run the location will be null
+    /// so it called in every 15 seconds to get location
+    LiveLocation.start(15);
+
     getLocation();
   }
 
@@ -49,13 +53,19 @@ class _MyAppState extends State<MyApp> {
       home: Scaffold(
         appBar: AppBar(
           title: const Text('Live Location Plugin'),
+          centerTitle: true,
         ),
         body: Padding(
           padding: const EdgeInsets.all(20.0),
           child: Center(
               child: Column(
             children: <Widget>[
-              Text('Latitude: $_latitude, Longitude: $_longitude'),
+              Text('Latitude: $_latitude',
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.w500),
+              ),
+              Text('Longitude: $_longitude',
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.w500),
+              ),
             ],
           )),
         ),
