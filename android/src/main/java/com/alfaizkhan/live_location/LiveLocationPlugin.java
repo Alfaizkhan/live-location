@@ -3,9 +3,12 @@ package com.alfaizkhan.live_location;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.location.Location;
+import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.NonNull;
+
+import com.alfaizkhan.live_location.Model.Accuracy;
 
 import io.flutter.app.FlutterActivity;
 import io.flutter.plugin.common.MethodCall;
@@ -82,7 +85,7 @@ class LocationAssistantListener implements LocationAssistant.Listener {
     private String longitude;
 
     public LocationAssistantListener(Context context) {
-        assistant = new LocationAssistant(context, this, LocationAssistant.Accuracy.HIGH, 5000, false);
+        assistant = new LocationAssistant(context, this, Accuracy.HIGH, 5000, false);
         assistant.start();
     }
 
@@ -94,22 +97,22 @@ class LocationAssistantListener implements LocationAssistant.Listener {
 
     @Override
     public void onExplainLocationPermission() {
-        io.flutter.Log.i("i", "onExplainLocationPermission: ");
+        Log.i("i", "onExplainLocationPermission: ");
     }
 
     @Override
     public void onLocationPermissionPermanentlyDeclined(View.OnClickListener fromView, DialogInterface.OnClickListener fromDialog) {
-        io.flutter.Log.i("i", "onLocationPermissionPermanentlyDeclined: ");
+        Log.i("i", "onLocationPermissionPermanentlyDeclined: ");
     }
 
     @Override
     public void onNeedLocationSettingsChange() {
-        io.flutter.Log.i("i", "LocationSettingsStatusCodes.RESOLUTION_REQUIRED: Please Turn on GPS location service.");
+        Log.i("i", "Please Turn on GPS location service.");
     }
 
     @Override
     public void onFallBackToSystemSettings(View.OnClickListener fromView, DialogInterface.OnClickListener fromDialog) {
-        io.flutter.Log.i("i", "onFallBackToSystemSettings: ");
+        Log.i("i", "onFallBackToSystemSettings: ");
     }
 
     @Override

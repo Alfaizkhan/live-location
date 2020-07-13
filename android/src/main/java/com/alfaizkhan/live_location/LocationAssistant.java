@@ -13,6 +13,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -21,6 +22,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.alfaizkhan.live_location.Model.Accuracy;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
@@ -35,6 +37,8 @@ import com.google.android.gms.location.LocationSettingsStatusCodes;
 
 public class LocationAssistant
         implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
+
+    private static final String TAG = "LocationAssistant" ;
 
     public interface Listener {
 
@@ -54,13 +58,6 @@ public class LocationAssistant
 
     }
 
-
-    public enum Accuracy {
-        HIGH,
-        MEDIUM,
-        LOW,
-        PASSIVE
-    }
 
 
     private final int REQUEST_CHECK_SETTINGS = 0;
@@ -87,7 +84,7 @@ public class LocationAssistant
     private boolean mockLocationsEnabled;
     private int numTimesPermissionDeclined;
 
-    // Mock location rejection
+    // Mock location rejected
     private Location lastMockLocation;
     private int numGoodReadings;
 
@@ -129,14 +126,6 @@ public class LocationAssistant
         googleApiClient.connect();
     }
 
-    /**
-     * Updates the active Activity for which the LocationAssistant manages location updates.
-     * When you want the LocationAssistant to start and stop with your overall application, but service different
-     * activities, call this method at the end of your  implementation.
-     *
-     * @param activity the activity that wants to receive location updates
-     * @param listener a listener that will receive location-related events
-     */
     public void register(AppCompatActivity activity, Listener listener) {
         this.activity = activity;
         this.listener = listener;
@@ -155,23 +144,6 @@ public class LocationAssistant
         updatesRequested = false;
     }
 
-    public void unregister() {
-        this.activity = null;
-        this.listener = null;
-    }
-
-    public void reset() {
-        permissionGranted = false;
-        locationRequested = false;
-        locationStatusOk = false;
-        updatesRequested = false;
-        acquireLocation();
-    }
-
-    public Location getBestLocation() {
-        return bestLocation;
-    }
-
     public void requestAndPossiblyExplainLocationPermission() {
         if (permissionGranted) return;
         if (activity == null) {
@@ -185,9 +157,6 @@ public class LocationAssistant
             requestLocationPermission();
     }
 
-    /**
-     * Brings up a system dialog asking the user to give location permission to the app.
-     */
     public void requestLocationPermission() {
         if (activity == null) {
 
@@ -282,7 +251,7 @@ public class LocationAssistant
             Location location = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
             onLocationChanged(location);
         } catch (SecurityException e) {
-
+            Log.d(TAG, e.toString());
         }
     }
 
@@ -315,7 +284,7 @@ public class LocationAssistant
             LocationAvailability la = LocationServices.FusedLocationApi.getLocationAvailability(googleApiClient);
             return (la != null && la.isLocationAvailable());
         } catch (SecurityException e) {
-
+            Log.d(TAG, e.toString());
             return false;
         }
     }
@@ -337,7 +306,7 @@ public class LocationAssistant
             LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, this);
             updatesRequested = true;
         } catch (SecurityException e) {
-
+            Log.d(TAG, e.toString());
         }
     }
 
