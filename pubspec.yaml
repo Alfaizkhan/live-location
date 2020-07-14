@@ -1,6 +1,6 @@
 name: live_location
-description: A new Flutter plugin.
-version: 0.0.2
+description: A Live location flutter plugin that fetches the user's live location.
+version: 1.0.0
 homepage: https://github.com/Alfaizkhan/live-location
 
 environment:
