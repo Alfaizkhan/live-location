@@ -1,4 +1,3 @@
-
 class LatLong {
   final String _latitude;
   final String _longitude;
@@ -10,7 +9,6 @@ class LatLong {
 
   /// get longitude.
   String get longitude => _longitude;
-
 
   /// return the string of latitude and longitude.
   @override

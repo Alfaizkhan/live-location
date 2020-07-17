@@ -13,8 +13,7 @@ class LiveLocation {
     List<String> pos;
     try {
       pos = await LiveLocation.getLatLong;
-      changeController
-          .add(new LatLong(pos[0], pos[1]));
+      changeController.add(new LatLong(pos[0], pos[1]));
     } on PlatformException catch (e) {
       print('PlatformException: $e');
     }
@@ -30,6 +29,7 @@ class LiveLocation {
   static stop() {
     getLocationTimer.cancel();
   }
+
   /// the stream getter where others can listen to.
   static Stream<LatLong> get onChange => changeController.stream;
 
@@ -39,7 +39,6 @@ class LiveLocation {
     final String longitude = await _channel.invokeMethod('getLongitude');
     return [latitude, longitude];
   }
-
 
   void dispose() {
     changeController.close();
