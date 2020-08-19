@@ -26,4 +26,4 @@ LiveLocation.start(your_input);
 
 ## License
 
-This plugin is open source project and the license is GNU GENERAL PUBLIC LICENSE.
+This plugin is open source project and the license is MIT LICENSE.
